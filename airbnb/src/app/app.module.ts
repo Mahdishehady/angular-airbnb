@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, Form
+    AppRoutingModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
