@@ -1,9 +1,9 @@
 export interface RegisterRequest{
 
-    fisrtname?:String;
-    lastname?:String;
-    email?:String;
-    password?:String;
+    fisrtname?:string;
+    lastname?:string;
+    email?:string;
+    password?:string;
     role?:string;
     mfaEnabled?:string;
 }

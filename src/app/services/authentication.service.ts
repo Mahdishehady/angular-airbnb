@@ -17,7 +17,8 @@ export class AuthenticationService {
   register(
     registerRequest : RegisterRequest
   ){
-    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/register`,registerRequest)
+    return this.http.post<AuthenticationResponse>
+    (`${this.baseUrl}/register`,registerRequest)
 
   }
 }

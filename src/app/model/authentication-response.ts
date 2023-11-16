@@ -1,6 +1,5 @@
-export interface AuthenticationResponse{
-
-    token?:String;
-    mfaEnabled?:String;
-    secretImageUri?:string
-}
+export interface AuthenticationResponse {
+    token?: string;
+    mfaEnabled?: string;
+    secretImageUri?: string;
+  }
