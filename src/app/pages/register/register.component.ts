@@ -5,6 +5,7 @@ import {AuthenticationResponse} from "../../model/authentication-response";
 import {Router} from "@angular/router";
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RegisterRequest } from '../../model/register-request ';
+import { VerificationRequest } from 'src/app/model/verification-request';
 
 @Component({
   selector: 'app-register',
@@ -27,23 +28,48 @@ export class RegisterComponent {
   registerUser() {
     this.message = '';
     this.authService.register(this.registerRequest)
-      .subscribe({
-        next: (response :AuthenticationResponse) => {
-          if (response) {
-            this.authResponse = response;
-            console.log(response.secretImageUri);
+    .subscribe(({ body }) => {
+      console.log('Token:', body.token);
+      console.log('MFA enabled:', body.mfaEnabled);
+      console.log('Secret image URI:', body.secretImageUri);
+      this.authResponse=body;
+    });
+      // .subscribe({
+      //   next: (response :AuthenticationResponse) => {
+      //     if (response) {
+      //       this.authResponse = response;
+      //       console.log(response.secretImageUri);
             
-          } else {
-            // inform the user
-            this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
-            setTimeout(() => {
-              this.router.navigate(['login']);
-            }, 3000)
-          }
-        }
-      });
+      //     } else {
+      //       // inform the user
+      //       this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
+      //       setTimeout(() => {
+      //         this.router.navigate(['login']);
+      //       }, 3000)
+      //     }
+      //   }
+      // });
 
+
+      
   }
+
+  verifyTfa() {
+    this.message = '';
+    const verifyRequest: VerificationRequest = {
+      email: this.registerRequest.email,
+      code: this.otpCode
+    };
+    this.authService.verifyCode(verifyRequest)
+    .subscribe(({ body :any }) => {
+          this.message = 'Account created successfully\nYou will be redirected to the Welcome page in 3 seconds';
+          setTimeout((body :any)  => {
+            localStorage.setItem('token', body.token);
+            this.router.navigate(['welcome']);
+          }, 3000);
+        }
+      )};
+  
 
  
 }

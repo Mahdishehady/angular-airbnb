@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!authResponse.mfaEnabled">
-  <div class="success-message-panel" >
+  <div class="success-message-panel" *ngIf="message">
     <div class="success-icon">&#10004;</div>
-    <div class="success-message"></div>
+    <div class="success-message">{{message}}</div>
   </div>
 
   <h2>Register</h2>
@@ -58,9 +58,9 @@
 
 <div class="container" *ngIf="authResponse.mfaEnabled">
 
-  <div class="success-message-panel" >
+  <div class="success-message-panel" *ngIf="message">
     <div class="success-icon">&#10004;</div>
-    <div class="success-message"></div>
+    <div class="success-message">{{message}}</div>
   </div>
 
   <h2>Set Up Two-Factor Authentication</h2>
@@ -74,11 +74,12 @@
       id="validationCode"
       name="validationCode"
       required
-     
+      [(ngModel)]="otpCode"
     >
   </div>
   <button
     type="button"
-
+    (click)="verifyTfa()"
+    [class.button-disabled]="otpCode.length < 6"
   >Verify code</button>
 </div>
