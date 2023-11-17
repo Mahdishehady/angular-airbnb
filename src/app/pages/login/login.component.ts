@@ -24,14 +24,19 @@ export class LoginComponent {
 
   authenticate() {
     this.authService.login(this.authRequest)
-    .subscribe(({ body }) => {
-          this.authResponse = body;
+    .subscribe( {
+      next:(response)=>{
+        if(response){
+          this.authResponse =response;
+          
+        
           if (!this.authResponse.mfaEnabled) {
-            localStorage.setItem('token', body.token as string);
+            localStorage.setItem('token', this.authResponse.token as string);
             this.router.navigate(['welcome']);
           }
         }
-      );
+      }
+  });
   }
 
   verifyCode() {
@@ -40,10 +45,13 @@ export class LoginComponent {
       code: this.otpCode
     };
     this.authService.verifyCode(verifyRequest)  
-    .subscribe(({ body }) => {
-          localStorage.setItem('token', body.token as string);
+    .subscribe( {
+      next:(response)=>{
+        if(response){
+          localStorage.setItem('token', response?.token as string);
           this.router.navigate(['welcome']);
         }
-      );
+        }
+  });
   }
 }

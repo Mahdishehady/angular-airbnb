@@ -28,27 +28,43 @@ export class RegisterComponent {
   registerUser() {
     this.message = '';
     this.authService.register(this.registerRequest)
-    .subscribe(({ body }) => {
-      console.log('Token:', body.token);
-      console.log('MFA enabled:', body.mfaEnabled);
-      console.log('Secret image URI:', body.secretImageUri);
-      this.authResponse=body;
-    });
-      // .subscribe({
-      //   next: (response :AuthenticationResponse) => {
-      //     if (response) {
-      //       this.authResponse = response;
-      //       console.log(response.secretImageUri);
+    // .subscribe(({ response }) => {
+      
+    //   if(response.body){
+    //   this.authResponse=response.body;
+    //   console.log('Token:', response.body.token);
+    //   console.log('MFA enabled:', response.body.mfaEnabled);
+    //   console.log('Secret image URI:', response.body.secretImageUri);
+    //   }
+    //   else {
+    //     console.log("noBody");
+        
+    //           // inform the user
+    //           this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
+    //           setTimeout(() => {
+    //             this.router.navigate(['login']);
+    //           }, 3000)
+    //         }
+          
+
+    // });
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          
+          if (response) {
+            this.authResponse = response.body;
+            console.log(response.body.secretImageUri);
             
-      //     } else {
-      //       // inform the user
-      //       this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
-      //       setTimeout(() => {
-      //         this.router.navigate(['login']);
-      //       }, 3000)
-      //     }
-      //   }
-      // });
+          } else {
+            // inform the user
+            this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
+            setTimeout(() => {
+              this.router.navigate(['login']);
+            }, 3000)
+          }
+        }
+      });
 
 
       
@@ -61,14 +77,16 @@ export class RegisterComponent {
       code: this.otpCode
     };
     this.authService.verifyCode(verifyRequest)
-    .subscribe(({ body :any }) => {
+    .subscribe({
+      next: (response) => {
+        console.log(response);
           this.message = 'Account created successfully\nYou will be redirected to the Welcome page in 3 seconds';
-          setTimeout((body :any)  => {
-            localStorage.setItem('token', body.token);
+          setTimeout(()  => {
+            localStorage.setItem('token', response.token);
             this.router.navigate(['welcome']);
           }, 3000);
         }
-      )};
+       } )};
   
 
  
